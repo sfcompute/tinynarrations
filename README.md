@@ -1,4 +1,4 @@
 # tinynarrations
 
-[sample](https://sfcompute.com/media/tinystoriessample.webm)
+[sample](https://sfcompute.com/media/tinynarrations.webm)
 
