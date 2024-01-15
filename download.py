@@ -21,7 +21,7 @@ folders = ['val_data_encodec_tokenized'] # ADD FOLDERS HERE
 
 
 
-s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+s3 = boto3.client('s3')
 
 def download_s3_folder(bucket_name, s3_folder, local_dir=None):
     """
