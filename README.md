@@ -9,6 +9,7 @@ Listen to a [sample](https://sfcompute.com/media/tinynarrations.webm).
 
 ### Instructions
 `git clone https://github.com/sfcompute/tinynarrations.git`
+
 `cd ./tinynarrations`
 
 `pip install boto3` and login. Transfer to other AWS instances is free, otherwise expensive egress for the larger splits.
