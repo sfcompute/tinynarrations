@@ -3,7 +3,7 @@
 
 ### [Release page](https://sfcompute.com/tiny-narrations)
 
-[Sample story audio.](https://sfcompute.com/media/tinynarrations.webm)
+Listen to a [sample](https://sfcompute.com/media/tinynarrations.webm).
 
 ### Instructions
 `git clone https://github.com/sfcompute/tinynarrations.git`
