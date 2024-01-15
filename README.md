@@ -35,6 +35,20 @@ folders = ['val_data_encodec_tokenized'] # ADD FOLDERS HERE
 
 There are two main raw audio folders, `/train_data` and `/val_data`, which contain synthetically generated wav files. Batch inference scripts are included in the generations folder. For smaller downloads, pretokenized data is available (`val_data_semantic_tokenized`, `val_data_encodec_tokenized` etc.), with [Hubert](https://github.com/facebookresearch/fairseq/blob/main/examples/hubert/README.md) for semantic tokens and [Encodec](https://github.com/facebookresearch/encodec) for decodable audio tokens, assuming an AudioLM style approach.
 
+To decode tokenized Encodec data:
+```python
+encodec = EncodecModel.encodec_model_24khz().cuda()
+encodec.set_target_bandwidth(6.0)
+
+encoded_tokens = torch.load(path)
+print(encoded_tokens.shape) # (n 1-secs, 8 quantizers, 75 tps)
+frame_list = [(frame.unsqueeze(0).cuda(), None) for frame in sample_encoded_tokens]
+print(frame_list[0][0].shape)
+encodec.segment = 1
+
+with torch.no_grad():
+decoded_waveform = encodec.decode(frame_list)
+```
 
 ### Generation
 As of now we don't have standardized scripts for generation of similar datasets. The main bit is just a batch inference function. To run batch inference on XTTS-v2, we used the following modified class method and the original TTS library:
