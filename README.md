@@ -3,6 +3,7 @@
 
 #### [Release page.](https://sfcompute.com/tiny-narrations)
 
+[Sample story audio.](https://sfcompute.com/media/tinynarrations.webm)
 
 ### Instructions.
 `git clone https://github.com/sfcompute/tinynarrations.git`
@@ -30,8 +31,6 @@ folders = ['val_data_encodec_tokenized'] # ADD FOLDERS HERE
 ```
 
 There are two main raw audio folders, `/train_data` and `/val_data`, which contain synthetically generated wav files. Batch inference scripts are included in the generations folder. For smaller downloads, pretokenized data is available (`val_data_semantic_tokenized`, `val_data_encodec_tokenized` etc.), with [Hubert](https://github.com/facebookresearch/fairseq/blob/main/examples/hubert/README.md) for semantic tokens and [Encodec](https://github.com/facebookresearch/encodec) for decodable audio tokens, assuming an AudioLM style approach.
-
-[Sample story audio.](https://sfcompute.com/media/tinynarrations.webm)
 
 
 ### Generation
