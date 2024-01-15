@@ -14,7 +14,7 @@ There are two main raw audio folders, `/train_data` and `/val_data`, which conta
 ### Generation
 To run batch inference on XTTS-v2, we used the following modified class method and the original TTS library.
 
-```
+```python
 def batch_inference(self, text_tokens, gpt_cond_latent, speaker_embedding,
         temperature=0.75, length_penalty=1.0, repetition_penalty=10.0, top_k=50, top_p=0.85, do_sample=True, num_beams=1, speed=1.0, **hf_generate_kwargs,
     ):
