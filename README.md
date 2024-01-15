@@ -1,19 +1,40 @@
 # Tiny Narrations
 > 3.5 years worth of synthetically narrated children's stories. Scripts written by GPT4 from [TinyStories](https://arxiv.org/abs/2305.07759).
+[Blogpost.](https://sfcompute.com/tiny-narrations)
 
-Data download script included at `download.py`. Modify the download script to get the data you're interested in. 
-```
+
+### Instructions.
+`git clone https://github.com/sfcompute/tinynarrations.git`
+`cd ./tinynarrations`
+
+`pip install boto3` and login. Transfer to other AWS instances is free, otherwise expensive egress for the larger splits.
+
+
+Edit line 20 to specify the data splits you'd like to download.
+```python
+"""
+Folders:
+/train_data - ~14TB, ~90k wav files
+/val_data - ~137GB, 864 wav files
+
+/train_data_semantic_tokenized - ~56GB, ~90k pt files
+/val_data_semantic_tokenized - ~573MB, 864 pt files
+
+/train_data_encodec_tokenized - ~687GB, ~90k pt files
+/val_data_encodec_tokenized - ~7GB, 864 pt files
+
+"""
+
 folders = ['val_data_encodec_tokenized'] # ADD FOLDERS HERE
-
 ```
-There are two main raw audio folders, `/train_data` and `/val_data`, which contain synthetically generated wav files from xttsV2. Batch inference scripts are included in the generations folder. For smaller downloads, pretokenized data is available (`val_data_semantic_tokenized`, `val_data_encodec_tokenized` etc.), with [Hubert](https://github.com/facebookresearch/fairseq/blob/main/examples/hubert/README.md) for semantic tokens and [Encodec](https://github.com/facebookresearch/encodec) for decodable audio tokens, assuming an AudioLM style approach.
+
+There are two main raw audio folders, `/train_data` and `/val_data`, which contain synthetically generated wav files. Batch inference scripts are included in the generations folder. For smaller downloads, pretokenized data is available (`val_data_semantic_tokenized`, `val_data_encodec_tokenized` etc.), with [Hubert](https://github.com/facebookresearch/fairseq/blob/main/examples/hubert/README.md) for semantic tokens and [Encodec](https://github.com/facebookresearch/encodec) for decodable audio tokens, assuming an AudioLM style approach.
 
 [sample](https://sfcompute.com/media/tinynarrations.webm)
 
 
 ### Generation
-To run batch inference on XTTS-v2, we used the following modified class method and the original TTS library.
-
+As of now we don't have standardized scripts for generation of similar datasets. The main bit is just a batch inference function. To run batch inference on XTTS-v2, we used the following modified class method and the original TTS library:
 ```python
 def batch_inference(self, text_tokens, gpt_cond_latent, speaker_embedding,
         temperature=0.75, length_penalty=1.0, repetition_penalty=10.0, top_k=50, top_p=0.85, do_sample=True, num_beams=1, speed=1.0, **hf_generate_kwargs,
