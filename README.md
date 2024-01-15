@@ -1,5 +1,5 @@
 # Tiny Narrations
-> 3 and a half years of synthetically narrated children's stories written by GPT4. Based on [TinyStories](https://arxiv.org/abs/2305.07759)
+> 3.5 years worth of synthetically narrated children's stories written by GPT4. Based on [TinyStories](https://arxiv.org/abs/2305.07759)
 
 Reference code to synthesize the dataset on an h100 node is included in the `/generations` folder. Data download script included at `download.py`.
 
