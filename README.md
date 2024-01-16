@@ -8,11 +8,12 @@ Listen to a [sample](https://sfcompute.com/media/tinynarrations.webm).
 <br>
 
 ### Instructions
-`git clone https://github.com/sfcompute/tinynarrations.git`
-
-`cd ./tinynarrations`
-
-`pip install boto3` and login. Transfer to other AWS instances is free, otherwise expensive egress for the larger splits.
+```
+git clone https://github.com/sfcompute/tinynarrations.git
+cd ./tinynarrations
+pip install boto3
+```
+Then login to AWS. Transfer to other AWS instances is free, otherwise expensive egress for the larger splits.
 
 
 Edit line 20 to specify the data splits you'd like to download.
