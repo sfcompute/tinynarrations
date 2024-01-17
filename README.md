@@ -1,7 +1,7 @@
 # Tiny Narrations
 > 3.5 years worth of synthetically narrated children's stories. Scripts written by GPT4 from [TinyStories](https://arxiv.org/abs/2305.07759).
 
-### [Release page](https://sfcompute.com/tiny-narrations)
+### [Release page](https://sfcompute.com/blog/tiny-narrations)
 
 Listen to a [sample](https://sfcompute.com/media/tinynarrations.webm).
 <br>
