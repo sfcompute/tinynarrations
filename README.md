@@ -50,7 +50,7 @@ print(frame_list[0][0].shape)
 encodec.segment = 1
 
 with torch.no_grad():
-decoded_waveform = encodec.decode(frame_list)
+        decoded_waveform = encodec.decode(frame_list)
 ```
 
 ### Generation
