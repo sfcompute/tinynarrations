@@ -18,6 +18,7 @@ Folders:
 """
 
 folders = ['val_data_encodec_tokenized'] # ADD FOLDERS HERE
+# WARNING! THIS WILL COST MONEY IF YOU ARE EGRESSING FROM AWS
 
 
 
@@ -59,7 +60,7 @@ def download_s3_folder(bucket_name, s3_folder, local_dir=None):
         dest_pathname = os.path.join(local_dir, k)
         if not os.path.exists(os.path.dirname(dest_pathname)):
             os.makedirs(os.path.dirname(dest_pathname))
-        s3.download_file(bucket_name, k, dest_pathname)
+        s3.download_file(bucket_name, k, dest_pathname, ExtraArgs={'RequestPayer': 'requester'})
 
 
 for folder in folders:
