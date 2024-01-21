@@ -2,12 +2,37 @@
 > 3.5 years worth of synthetically narrated children's stories. Scripts written by GPT4 from [TinyStories](https://arxiv.org/abs/2305.07759).
 
 ### [Release page](https://sfcompute.com/blog/tiny-narrations)
+### [Huggingface dataset](https://huggingface.co/datasets/sfcompute/tiny-narrations)
 
 Listen to a [sample](https://sfcompute.com/media/tinynarrations.webm).
 <br>
 <br>
 
-### Instructions
+## Instructions (Huggingface datasets)
+```bash
+pip install datasets
+```
+
+```python
+from datasets import load_dataset
+
+val_split = load_dataset('sfcompute/TinyNarrations', split='validation', streaming=True)
+train_split = load_dataset('sfcompute/TinyNarrations', split='train', streaming=True)
+```
+
+```python
+import torch
+
+wav = torch.from_numpy(next(iter(val_split))['audio']['array']).unsqueeze(0)
+```
+
+
+To load audio ensure you have the following installed:
+```bash
+pip install librosa soundfile
+```
+
+### Instructions (S3 bucket)
 ```
 git clone https://github.com/sfcompute/tinynarrations.git
 cd ./tinynarrations
@@ -51,56 +76,4 @@ encodec.segment = 1
 
 with torch.no_grad():
         decoded_waveform = encodec.decode(frame_list)
-```
-
-### Generation
-As of now we don't have standardized scripts for generation of similar datasets. The main bit is just a batch inference function. To run batch inference on XTTS-v2, we used the following modified class method and the original TTS library:
-```python
-def batch_inference(self, text_tokens, gpt_cond_latent, speaker_embedding,
-        temperature=0.75, length_penalty=1.0, repetition_penalty=10.0, top_k=50, top_p=0.85, do_sample=True, num_beams=1, speed=1.0, **hf_generate_kwargs,
-    ):
-        wavs = []
-        gpt_latents_list = []
-
-        with torch.no_grad():
-            with torch.autocast(device_type='cuda', dtype=torch.bfloat16) if autocast else contextlib.nullcontext():
-                gpt_codes = self.gpt.generate(
-                    cond_latents=gpt_cond_latent,
-                    text_inputs=text_tokens,
-                    input_tokens=None,
-                    do_sample=do_sample,
-                    # etc. (gpt_batch_size is 1, we're hacking around it.)
-                    top_p=top_p, top_k=top_k, temperature=temperature, num_return_sequences=self.gpt_batch_size, num_beams=num_beams, length_penalty=length_penalty, repetition_penalty=repetition_penalty, output_attentions=False, **hf_generate_kwargs,
-                )
-                expected_output_len = torch.tensor(
-                    [gpt_codes.shape[-1] * self.gpt.code_stride_len], device=text_tokens.device
-                )
-
-                text_len = torch.tensor([text_tokens.shape[-1]], device=self.device)
-                gpt_latents = self.gpt(
-                    text_tokens,
-                    text_len,
-                    gpt_codes,
-                    expected_output_len,
-                    cond_latents=gpt_cond_latent,
-                    return_attentions=False,
-                    return_latent=True,
-                )
-
-                if speed != 1.0:
-                    gpt_latents = F.interpolate(
-                        gpt_latents.transpose(1, 2), scale_factor=(1.0 / max(speed, 0.05)), mode='linear'
-                    ).transpose(1, 2)
-
-                wav = self.hifigan_decoder(gpt_latents, g=speaker_embedding)
-
-            gpt_latents_list.append(gpt_latents.cpu().float())
-            wavs.append(wav.squeeze().float())
-
-        return {
-            'wav': torch.cat(wavs, dim=0),
-            'gpt_latents': torch.cat(gpt_latents_list, dim=1).numpy(),
-            'gpt_codes': gpt_codes.cpu().numpy(),
-            'speaker_embedding': speaker_embedding,
-        }
 ```
